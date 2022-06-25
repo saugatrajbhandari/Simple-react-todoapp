@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react'
+import './App.css'
+import TodoLists from './TodoLists';
 
-function App() {
+
+const App = () => {
+
+  const [text, setText] = useState("");
+  const initialData = JSON.parse(localStorage.getItem("todos"));
+  console.log(initialData);
+  const [items, setItems] = useState([...initialData]);
+
+  const deleteItem = (id) => {
+    const newItems = items.filter((item, index)=> index !== id)
+    setItems(newItems)
+    localStorage.setItem("todos", JSON.stringify(newItems))
+  }
+  
+  const addItem = () =>{
+    const newItems = [...items, text];
+    setItems(newItems)
+    setText("");
+    window.localStorage.setItem("todos", JSON.stringify(newItems)) 
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='main_div'>
+      <div className="center_div">
+        <br />
+        <h1>ToDo List</h1>
+        <br />
+        <input type="text" onChange={(e) => {setText(e.target.value)}} name="" id="" value={text} placeholder='Add a Items' onKeyPress={(e) => e.key==="Enter" && addItem()}/>
+        <button onClick={addItem}>+</button>
+        <ol>
+          {items && (
+            items.map((item, index) => <TodoLists item={item} index={index} deleteItem={deleteItem} key={index} />)
+          )}
+        </ol>
+      </div>
+
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
