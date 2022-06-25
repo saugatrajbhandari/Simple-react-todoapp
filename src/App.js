@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './App.css'
 import TodoLists from './TodoLists';
 
@@ -7,7 +7,6 @@ const App = () => {
 
   const [text, setText] = useState("");
   const initialData = JSON.parse(localStorage.getItem("todos"));
-  console.log(initialData);
   const [items, setItems] = useState([...initialData]);
 
   const deleteItem = (id) => {
